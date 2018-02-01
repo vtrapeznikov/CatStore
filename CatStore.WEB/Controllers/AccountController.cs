@@ -99,8 +99,8 @@ namespace CatStore.WEB.Controllers
         {
             await Service.SetInitialData(new UserDTO
             {
-                Email = "qwe@wqe.by",
-                UserName = "qwe@wqe.by",
+                Email = "qwe@qwe.by",
+                UserName = "qwe@qwe.by",
                 Password = "123",
                 Name = "Владимир Трапезников",
                 Address = "Новополоцк",
