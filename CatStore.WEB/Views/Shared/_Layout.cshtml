@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title – приложение ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container">
+            <div class="row">
+                <header class="col-md-12 col-sm-12">
+                    <a href="/Home/Index"><img src="~/Images/logo.png" id="logo" /></a>
+                    <nav class="navbar navbar-default" role="navigation">
+                        <div class="navbar-collapse collapse" id="navbar-header-mobile">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+                                @if (User.IsInRole("admin"))
+                                {
+                                    <li>@Html.ActionLink("Заказы", "Index", "Order")</li>
+                                }
+                            </ul>
+                        </div>
+                    </nav>
+                    @Html.Partial("_LoginPartial")
+                </header>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

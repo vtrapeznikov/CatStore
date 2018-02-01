@@ -13,5 +13,6 @@ namespace CatStore.DAL.Interfaces
         IRepository<Cat> Cats { get; }
         IRepository<Order> Orders { get; }
         Task SaveAsync();
+        void Save();
     }
 }

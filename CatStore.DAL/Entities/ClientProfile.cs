@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
 namespace CatStore.DAL.Entities
 {
@@ -13,5 +14,6 @@ namespace CatStore.DAL.Entities
         public string Address { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

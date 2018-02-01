@@ -7,6 +7,10 @@ namespace CatStore.DAL.EF
     public class CatContext : IdentityDbContext<ApplicationUser>
     {
         public CatContext(string conectionString) : base(conectionString) { }
+        public CatContext()
+        {
+
+        }
 
         public DbSet<ClientProfile> ClientProfiles { get; set; }
         public DbSet<Cat> Cats { get; set; }

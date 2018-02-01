@@ -19,6 +19,11 @@ namespace CatStore.DAL.Repositories
             Db.SaveChanges();
         }
 
+        public ClientProfile Get(string id)
+        {
+            return Db.ClientProfiles.Find(id);
+        }
+
         public void Dispose()
         {
             Db.Dispose();

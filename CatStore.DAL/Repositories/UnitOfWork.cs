@@ -65,6 +65,11 @@ namespace CatStore.DAL.Repositories
             await Db.SaveChangesAsync();
         }
 
+        public void Save()
+        {
+            Db.SaveChanges();
+        }
+
         public void Dispose()
         {
             Dispose(true);

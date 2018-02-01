@@ -1,0 +1,29 @@
+﻿@model CatStore.WEB.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-signin", role = "form" }))
+{
+    @Html.ActionLink("Главная страница", "Index", "Home")
+    @Html.AntiForgeryToken()
+    <h2>Вход</h2>
+    @Html.ValidationSummary();
+
+    @Html.LabelFor(m => m.Name)
+    @Html.TextBoxFor(m => m.Name, new { @placeholder = "Введите имя", @type = "text" })
+
+    @Html.LabelFor(m => m.Email, "Email. Пожалуйста, используйте существующую почту")
+    @Html.TextBoxFor(m => m.Email, new { @placeholder = "Введите email.", @type = "email" })
+
+    @Html.LabelFor(m => m.Password)
+    @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Введите пароль" })
+
+    @Html.LabelFor(m => m.ConfirmPassword)
+    @Html.PasswordFor(m => m.ConfirmPassword, new { @type = "password", @placeholder = "Подтвердите пароль" })
+
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+}
+
