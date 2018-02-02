@@ -4,26 +4,62 @@
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="container">
+    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-signin", role = "form" }))
+    {
+        @Html.ActionLink("Главная страница", "Index", "Home")
+        @Html.AntiForgeryToken()
+        <h2>Registration</h2>
+        @Html.ValidationSummary();
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-signin", role = "form" }))
-{
-    @Html.ActionLink("Главная страница", "Index", "Home")
-    @Html.AntiForgeryToken()
-    <h2>Вход</h2>
-    @Html.ValidationSummary();
+        <fieldset>
+            <div class="control-group">
+                <!-- Username -->
+                @Html.LabelFor(m => m.Name)
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Name, new { @placeholder = "Введите имя", @type = "text" })
+                </div>
+            </div>
 
-    @Html.LabelFor(m => m.Name)
-    @Html.TextBoxFor(m => m.Name, new { @placeholder = "Введите имя", @type = "text" })
+            <div class="control-group">
+                <!-- E-mail -->
+                @Html.LabelFor(m => m.Email, "Email. Пожалуйста, используйте существующую почту")
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Email, new { @placeholder = "Введите email.", @type = "email" })
+                </div>
+            </div>
 
-    @Html.LabelFor(m => m.Email, "Email. Пожалуйста, используйте существующую почту")
-    @Html.TextBoxFor(m => m.Email, new { @placeholder = "Введите email.", @type = "email" })
+            <div class="control-group">
+                <!-- Address -->
+                @Html.LabelFor(m => m.Address)
+                <div class="controls">
+                    @Html.PasswordFor(m => m.Address, new { @type = "text", @placeholder = "Подтвердите адрес" })
+                </div>
+            </div>
 
-    @Html.LabelFor(m => m.Password)
-    @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Введите пароль" })
+            <div class="control-group">
+                <!-- Password-->
+                @Html.LabelFor(m => m.Password)
+                <div class="controls">
+                    @Html.PasswordFor(m => m.Password, new { @type = "password", @placeholder = "Введите пароль" })
+                </div>
+            </div>
 
-    @Html.LabelFor(m => m.ConfirmPassword)
-    @Html.PasswordFor(m => m.ConfirmPassword, new { @type = "password", @placeholder = "Подтвердите пароль" })
+            <div class="control-group">
+                <!-- Password -->
+                @Html.LabelFor(m => m.ConfirmPassword)
+                <div class="controls">
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @type = "password", @placeholder = "Подтвердите пароль" })
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-}
-
+            <br />
+            <div class="control-group">
+                <!-- Button -->
+                <div class="controls">
+                    <button class="btn btn-success">Register</button>
+                </div>
+            </div>
+        </fieldset>
+    }
+</div>

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<CatStore.WEB.Models.OrderViewModel>
+
+<h4>My orders</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Sum)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CatId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sum)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CatId)
+            </td>
+            <td>
+                @using (Html.BeginForm("Delete", "order", FormMethod.Post, new { }))
+                {
+                    <input type="hidden" value="@item.Id" name="id" />
+                    <input type="submit" value="Delete" class="btn btn-link" />
+                }
+            </td>
+        </tr>
+    }
+
+</table>

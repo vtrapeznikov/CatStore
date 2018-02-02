@@ -75,7 +75,8 @@ namespace CatStore.BLL.Services
                     Address = user.Address,
                     Name = user.Name,
                     Email = user.ApplicationUser.Email,
-                    UserName = user.ApplicationUser.UserName
+                    UserName = user.ApplicationUser.UserName,
+                    Id = user.Id
                 };
             }
         }
@@ -95,15 +96,15 @@ namespace CatStore.BLL.Services
             await Create(adminDto);
         }
 
-        public void MakeOrder(OrderDTO orderDto)
+        public OperationDetails MakeOrder(OrderDTO orderDto)
         {
             var cat = db.Cats.Get(orderDto.CatId);
             var client = db.UserManager.FindById(orderDto.ClientProfileId.ToString());
 
             if (cat == null)
-                throw new ValidationException("Товар не найден", "");
+                return new OperationDetails(false, "Товар не найден", "");
             if (client == null)
-                throw new ValidationException("Пользователь не найден", "");
+                return new OperationDetails(false, "Пользователь не найден", "");
             Order order = new Order
             {
                 Date = DateTime.Now,
@@ -113,6 +114,45 @@ namespace CatStore.BLL.Services
             };
             db.Orders.Create(order);
             db.Save();
+            return new OperationDetails(true, "Заказ сделан", "");
+        }
+
+        public IEnumerable<OrderDTO> GetOrders()
+        {
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDTO>());
+            return Mapper.Map<IEnumerable<Order>, List<OrderDTO>>(db.Orders.GetAll());
+        }
+
+        public OperationDetails DeleteOrder(int id)
+        {
+            try
+            {
+                db.Orders.Delete(id);
+                db.Save();
+                return new OperationDetails(true, "Заказ удален", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Невозможно удалить заказ", "");
+            }
+        }
+
+        public OperationDetails CreateCat(CatDTO item)
+        {
+            if (item != null)
+            {
+                db.Cats.Create(new Cat
+                {
+                    Cost = item.Cost,
+                    Description = item.Description,
+                    Name = item.Name,
+                    PhotoUrl = item.PhotoUrl
+                });
+                db.Save();
+                return new OperationDetails(true, "Кот добавлен", "");
+            }
+            return new OperationDetails(false, "Пустой параметр кота", "");
         }
 
         public IEnumerable<CatDTO> GetCats()
@@ -136,25 +176,38 @@ namespace CatStore.BLL.Services
             return Mapper.Map<Cat, CatDTO>(cat);
         }
 
-        public IEnumerable<OrderDTO> GetOrders()
+        public OperationDetails DeleteCat(int id)
         {
-            Mapper.Reset();
-            Mapper.Initialize(cfg => cfg.CreateMap<Order, OrderDTO>());
-            return Mapper.Map<IEnumerable<Order>, List<OrderDTO>>(db.Orders.GetAll());
+            try
+            {
+                db.Cats.Delete(id);
+                db.Save();
+                return new OperationDetails(true, "Кот удален", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Невозможно удалить кота", "");
+            }
         }
 
-        public void CreateCat(CatDTO item)
+        public OperationDetails EditCat(CatDTO item)
         {
-            if (item != null)
+            try
             {
-                db.Cats.Create(new Cat
+                db.Cats.Update(new Cat
                 {
+                    Id = item.Id,
                     Cost = item.Cost,
                     Description = item.Description,
                     Name = item.Name,
                     PhotoUrl = item.PhotoUrl
                 });
                 db.Save();
+                return new OperationDetails(true, "Кот изменен", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Невозможно изменить кота", "");
             }
         }
 

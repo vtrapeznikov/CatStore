@@ -9,6 +9,9 @@ using CatStore.BLL.DTO;
 using System.Security.Claims;
 using CatStore.BLL.Interfaces;
 using CatStore.BLL.Infrastructure;
+using CatStore.BLL.Services;
+using System.Linq;
+using AutoMapper;
 
 namespace CatStore.WEB.Controllers
 {
@@ -39,7 +42,7 @@ namespace CatStore.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
         {
-            await SetInitialDataAsync();
+            //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
@@ -76,12 +79,13 @@ namespace CatStore.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-            await SetInitialDataAsync();
+            //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
                 {
                     Email = model.Email,
+                    UserName=model.Email,
                     Password = model.Password,
                     Address = model.Address,
                     Name = model.Name,
@@ -92,16 +96,18 @@ namespace CatStore.WEB.Controllers
                     return View("SuccessRegister");
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                Loggin.CreateLog(operationDetails.Message);
             }
             return View(model);
         }
+        //вспомогательный для первой инициализации
         private async Task SetInitialDataAsync()
         {
             await Service.SetInitialData(new UserDTO
             {
                 Email = "qwe@qwe.by",
                 UserName = "qwe@qwe.by",
-                Password = "123",
+                Password = "111111",
                 Name = "Владимир Трапезников",
                 Address = "Новополоцк",
                 Role = "admin",
@@ -120,10 +126,22 @@ namespace CatStore.WEB.Controllers
             return PartialView();
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             var user = Service.GetCurrentUser();
             return View(user);
+        }
+
+        [Authorize]
+        public ActionResult _PartialUserOrders()
+        {
+            var user = Service.GetCurrentUser();
+            var orderDtos = Service.GetOrders().Where(o => o.ClientProfileId == user.Id);
+            Mapper.Reset();
+            Mapper.Initialize(cfg => cfg.CreateMap<OrderDTO, OrderViewModel>());
+            var orders = Mapper.Map<IEnumerable<OrderDTO>, List<OrderViewModel>>(orderDtos);
+            return PartialView(orders);
         }
     }
 }

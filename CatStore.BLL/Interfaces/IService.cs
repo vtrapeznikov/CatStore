@@ -10,11 +10,15 @@ namespace CatStore.BLL.Interfaces
 {
     public interface IService : IDisposable
     {
-        void MakeOrder(OrderDTO orderDto);
+        OperationDetails MakeOrder(OrderDTO orderDto);
+        IEnumerable<OrderDTO> GetOrders();
+        OperationDetails DeleteOrder(int id);
+
         CatDTO GetCat(int? id);
         IEnumerable<CatDTO> GetCats();
-        IEnumerable<OrderDTO> GetOrders();
-        void CreateCat(CatDTO item);
+        OperationDetails CreateCat(CatDTO item);
+        OperationDetails DeleteCat(int id);
+        OperationDetails EditCat(CatDTO item);
 
         Task<OperationDetails> Create(UserDTO userDto);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);

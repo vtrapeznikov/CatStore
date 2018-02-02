@@ -34,7 +34,6 @@ namespace CatStore.WEB.Controllers
         {
             IEnumerable<CatDTO> catDtos = service.GetCats();
             Mapper.Reset();
-
             Mapper.Initialize(cfg => cfg.CreateMap<CatDTO, CatViewModel>());
             var cats = Mapper.Map<IEnumerable<CatDTO>, List<CatViewModel>>(catDtos);
             return View(cats);
